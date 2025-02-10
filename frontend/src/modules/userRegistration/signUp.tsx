@@ -4,10 +4,16 @@ import { TextInput } from '@/src/components/styledInput/input'
 import { PasswordInput } from '@/src/components/passwordInput/password'
 import { LoadingButton } from '@/src/components/loadingButton/loadingButton'
 import Link from 'next/link'
+import { useForm } from './hooks/useForm'
+import { FieldKey } from './constants'
 
 export const SignUp = (): ReactElement => {
+  const { isSubmitting, handleChange, errors, values, handleSubmit } = useForm({
+    initialValues: { email: '', password: '', name: '' }
+  })
+  const { name, email, password } = values
   return (
-    <form autoComplete='off' noValidate>
+    <form autoComplete='off' noValidate onSubmit={handleSubmit}>
       <Grid container sx={{ height: '100vh' }}>
         <Grid item xs={12} sx={{ display: 'flex' }}>
           <Box
@@ -48,30 +54,40 @@ export const SignUp = (): ReactElement => {
               </Typography>
               <Box sx={{ width: '100%' }}>
                 <TextInput
-                  name='name'
-                  type='name'
-                  id='name'
+                  id={FieldKey.NAME}
+                  name={FieldKey.NAME}
                   label={'Student Name'}
                   placeholder={'Enter your Name'}
                   fullWidth
                   autoFocus
+                  onChange={handleChange}
+                  value={name}
+                  error={!!errors[FieldKey.NAME]}
+                  helperText={errors[FieldKey.NAME]}
                 />
                 <TextInput
-                  name='email'
-                  type='email'
-                  id='email'
+                  id={FieldKey.EMAIL}
+                  name={FieldKey.EMAIL}
                   label={'Student Email'}
                   placeholder={'Enter your email'}
                   fullWidth
                   autoFocus
+                  onChange={handleChange}
+                  value={email}
+                  error={!!errors[FieldKey.EMAIL]}
+                  helperText={errors[FieldKey.EMAIL]}
                 />
                 <PasswordInput
-                  name='password'
-                  type='password'
-                  id='password'
-                  label={'Password'}
-                  placeholder={'Enter strong password'}
+                  id={FieldKey.PASSWORD}
+                  name={FieldKey.PASSWORD}
+                  label={'Student Password'}
+                  placeholder={'Enter your password'}
                   fullWidth
+                  autoFocus
+                  onChange={handleChange}
+                  value={password}
+                  error={!!errors[FieldKey.PASSWORD]}
+                  helperText={errors[FieldKey.PASSWORD]}
                 />
               </Box>
               <LoadingButton
@@ -79,8 +95,8 @@ export const SignUp = (): ReactElement => {
                 type='submit'
                 fullWidth
                 label={'Register'}
-                isLoading={false}
-                isDisabled={false}
+                isLoading={isSubmitting}
+                isDisabled={isSubmitting}
               />
               <Typography
                 variant='caption'
