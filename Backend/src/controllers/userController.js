@@ -8,7 +8,7 @@ export const register = async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Please supply all the required fields...",
+        message: "Please supply all the required fields",
       });
     }
 
@@ -16,7 +16,7 @@ export const register = async (req, res) => {
     if (doesUserExit) {
       return res.status(400).json({
         success: false,
-        message: "User already exit with this email...",
+        message: "User already exit with this email",
       });
     }
 
@@ -24,12 +24,12 @@ export const register = async (req, res) => {
     await User.create({ name, email, password: hashedPassword });
     return res.status(201).json({
       success: true,
-      message: "User register successfully...",
+      message: "User register successfully",
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message || "Failed to register user...",
+      message: error.message || "Failed to register user",
     });
   }
 };
@@ -40,7 +40,7 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Please supply all the required fields...",
+        message: "Please supply all the required fields",
       });
     }
 
@@ -48,22 +48,23 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Incorrect Email or password...",
+        message: "Incorrect Email or password",
       });
     }
 
-    const isPasswordMatch = bcrypt.compare(password, user.password);
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({
         success: false,
-        message: "Incorrect Email or password...",
+        message: "Incorrect Email or password",
       });
     }
-    generateToken(res, user, `Welcome back ${user.name}`);
+    const userData = await User.findOne({ email }).select("-password");
+    generateToken(res, userData, `Welcome back ${user.name}`);
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message || "Failed to login user...",
+      message: error.message || "Failed to login user",
     });
   }
 };
