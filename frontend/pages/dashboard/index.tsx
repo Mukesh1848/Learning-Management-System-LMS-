@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { DashboardPage } from '@/src/modules/dashboars/dashboard'
+import { DashboardPage } from '@/src/modules/dashboards/dashboard'
 
 const Dashboard = (): ReactElement => {
   return <DashboardPage />
