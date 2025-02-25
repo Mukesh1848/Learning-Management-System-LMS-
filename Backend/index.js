@@ -12,9 +12,11 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const corsOptions = {
-  origin: "*", // Allow All domain
+  // origin: "*", // Allow All domain
+  origin: "http://localhost:3001",
   methods: "GET,POST,PUT, DELETE", // Allow only specific HTTP methods
   allowedHeaders: "Content-Type,Authorization", // Allow specific headers
+  credentials: true,
 };
 
 // middlewares

@@ -37,7 +37,9 @@ export const useForm = ({
 
   const mutation = useMutation({
     mutationFn: (values) => {
-      return axios.post(`http://localhost:8080/api/v1/user/login`, values);
+      return axios.post(`http://localhost:8080/api/v1/user/login`, values, {
+        withCredentials: true,
+      });
     },
     onSuccess: (data) => {
       router.push("/dashboard");
